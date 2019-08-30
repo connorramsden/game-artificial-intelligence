@@ -5,10 +5,10 @@
 
 class Vector2D;
 
-class PlayerMoveToMessage:public GameMessage
+class PlayerMoveToMessage :public GameMessage
 {
 public:
-	PlayerMoveToMessage( const Vector2D& pos );
+	PlayerMoveToMessage(const Vector2D& pos);
 	~PlayerMoveToMessage();
 
 	void process();

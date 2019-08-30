@@ -18,4 +18,3 @@ void PlayerMoveToMessage::process()
 	Unit* pPlayer = gpGame->getUnitManager()->getPlayerUnit();
 	pPlayer->setSteering(Steering::SEEK, mPos);
 }
-

@@ -18,6 +18,7 @@
 #include <Timer.h>
 #include <DataRepository.h>
 #include "PlayerMoveToMessage.h"
+#include "UnitStateMessage.h"
 #include "ComponentManager.h"
 #include "UnitManager.h"
 #include "DataLoader.h"
@@ -248,11 +249,13 @@ void Game::processLoop()
 
 	if (pInputSystem->isKeyPressed(InputSystem::UP_KEY))
 	{
-		Unit* pUnit = mpUnitManager->createRandomUnit(*mpSpriteManager->getSprite(AI_ICON_SPRITE_ID), mDoFleeBehaviour);
+		GameMessage* pMessage = new UnitStateMessage("create", mDoFleeBehaviour);
+		MESSAGE_MANAGER->addMessage(pMessage, 0);
 	}
 	else if (pInputSystem->isKeyPressed(InputSystem::DOWN_KEY))
 	{
-		mpUnitManager->deleteRandomUnit();
+		GameMessage* pMessage = new UnitStateMessage("destroy");
+		MESSAGE_MANAGER->addMessage(pMessage, 0);
 	}
 
 	if (pInputSystem->isKeyPressed(InputSystem::LEFT_KEY))
