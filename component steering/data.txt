@@ -5,3 +5,8 @@ unit_max_acc 250.0
 unit_max_speed 250.0
 unit_max_rot_acc 1.0
 unit_max_rot_vel 5.0
+background_image ../../../shared/Assets/wallpaper.bmp
+player_image ../../../shared/Assets/arrow.png
+enemy_image ../../../shared/Assets/enemy-arrow.png
+target_image ../../../shared/Assets/target.png
+game_font ../../../shared/Assets/cour.ttf

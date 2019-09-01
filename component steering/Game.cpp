@@ -81,13 +81,13 @@ bool Game::init()
 
 	//load buffers
 	GraphicsBuffer* pBuff;
-	pBuff = mpGraphicsBufferManager->loadBuffer(mBackgroundBufferID, "wallpaper.bmp");
-	pBuff = mpGraphicsBufferManager->loadBuffer(mPlayerIconBufferID, "arrow.png");
-	pBuff = mpGraphicsBufferManager->loadBuffer(mEnemyIconBufferID, "enemy-arrow.png");
-	pBuff = mpGraphicsBufferManager->loadBuffer(mTargetBufferID, "target.png");
+	pBuff = mpGraphicsBufferManager->loadBuffer(mBackgroundBufferID, mpRepository->getEntry(DataKeyEnum::BACKGROUND_IMG).getStringVal());
+	pBuff = mpGraphicsBufferManager->loadBuffer(mPlayerIconBufferID, mpRepository->getEntry(DataKeyEnum::PLAYER_IMG).getStringVal());
+	pBuff = mpGraphicsBufferManager->loadBuffer(mEnemyIconBufferID, mpRepository->getEntry(DataKeyEnum::ENEMY_IMG).getStringVal());
+	pBuff = mpGraphicsBufferManager->loadBuffer(mTargetBufferID, mpRepository->getEntry(DataKeyEnum::TARGET_IMG).getStringVal());
 
 	//load Font
-	mpFont = mpFontManager->createAndManageFont(COUR_24_FONT_ID, "cour.ttf", 24);
+	mpFont = mpFontManager->createAndManageFont(COUR_24_FONT_ID, mpRepository->getEntry(DataKeyEnum::GAME_FONT).getStringVal(), 24);
 
 	//setup sprites
 	GraphicsBuffer* pBackGroundBuffer = mpGraphicsBufferManager->getBuffer(mBackgroundBufferID);

@@ -62,6 +62,36 @@ DataLoader::DataLoader(const string& filename, DataRepository* pRepository)
 				sstream >> max;
 				pRepository->addEntry(DataKeyEnum::MAX_ROT_VEL, max);
 			}
+			else if (id == "background_image")
+			{
+				string fileName;
+				sstream >> fileName;
+				pRepository->addEntry(DataKeyEnum::BACKGROUND_IMG, fileName);
+			}
+			else if (id == "player_image")
+			{
+				string fileName;
+				sstream >> fileName;
+				pRepository->addEntry(DataKeyEnum::PLAYER_IMG, fileName);
+			}
+			else if (id == "enemy_image")
+			{
+				string fileName;
+				sstream >> fileName;
+				pRepository->addEntry(DataKeyEnum::ENEMY_IMG, fileName);
+			}
+			else if (id == "target_image")
+			{
+				string fileName;
+				sstream >> fileName;
+				pRepository->addEntry(DataKeyEnum::TARGET_IMG, fileName);
+			}
+			else if (id == "game_font")
+			{
+				string fileName;
+				sstream >> fileName;
+				pRepository->addEntry(DataKeyEnum::GAME_FONT, fileName);
+			}
 			else
 			{
 				cout << "Unknown tag:" << id << endl;
