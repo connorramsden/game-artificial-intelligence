@@ -1,3 +1,8 @@
+/*
+	Certification of Authenticity:
+	I, Connor Ramsden, certify that this assignment is my own work.
+*/
+
 #pragma once
 
 #include "Trackable.h"
