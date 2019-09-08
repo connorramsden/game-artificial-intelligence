@@ -29,6 +29,7 @@ Steering* SeekSteering::getSteering()
 	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
 	//are we seeking a location or a unit?
 	
+	// Access target's location
 	if (mTargetID != INVALID_UNIT_ID)
 	{
 		//seeking unit

@@ -1,6 +1,14 @@
-#pragma once
 #include "Steering.h"
-class ArriveSteering :
-	public Steering
-{};
 
+class ArriveSteering : public Steering
+{
+public:
+	ArriveSteering(const UnitID& ownerID, const Vector2D& targetLoc, float targetRadius, float slowRadius, const UnitID& targetID = INVALID_UNIT_ID);
+protected:
+	virtual Steering* getSteering();
+
+private:
+	float mTargetRadius;
+	float mSlowRadius;
+	float mTimeToTarget = 0.1f;
+};
