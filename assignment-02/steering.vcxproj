@@ -54,6 +54,9 @@
     <ClCompile Include="UnitStateMessage.cpp" />
     <ClCompile Include="WanderAndChaseSteering.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{07ED8114-0659-4424-9468-50DBBEA5882A}</ProjectGuid>
     <RootNamespace>allegrotest</RootNamespace>

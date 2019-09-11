@@ -6,45 +6,65 @@
 #include "UnitManager.h"
 #include "Unit.h"
 
-ArriveSteering::ArriveSteering(const UnitID& ownerID, const Vector2D& targetLoc, float targetRadius, float slowRadius, const UnitID& targetID)
+ArriveSteering::ArriveSteering(const UnitID& ownerID, const Vector2D& targetLoc, const UnitID& targetID)
+	: Steering()
 {
 	mType = Steering::ARRIVE;
 
 	setOwnerID(ownerID);
 	setTargetLoc(targetLoc);
 	setTargetID(targetID);
-
-	mTargetRadius = targetRadius;
-	mSlowRadius = slowRadius;
 }
 
 Steering* ArriveSteering::getSteering()
 {
-	Vector2D diff;
+	Vector2D direction;
 	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
 
-	if (mTargetID != INVALID_UNIT_ID) {
+	if (mTargetID != INVALID_UNIT_ID)
+	{
 		Unit* pTarget = gpGame->getUnitManager()->getUnit(mTargetID);
 		assert(pTarget != nullptr);
 		mTargetLoc = pTarget->getPositionComponent()->getPosition();
 	}
 
-	diff = mTargetLoc - pOwner->getPositionComponent()->getPosition();
-	float distance = diff.getLength();
+	// Store Direction & Distance to the current target
+	direction = mTargetLoc - pOwner->getPositionComponent()->getPosition();
+	float distance = direction.getLength();
 
-	if (distance < mTargetRadius)
-		return nullptr;
+	// If we are already at our target, return nothing
+	if (distance < TARGET_RADIUS)
+		direction = 0;
 
-	if (distance > mSlowRadius) {
-		diff *= pOwner->getMaxAcc();
+	// If we are outside the slow radius, go as fast as possible
+	if (distance > SLOW_RADIUS)
+	{
+		direction *= pOwner->getMaxSpeed();
 	}
-	else {
-		diff *= pOwner->getMaxAcc() * distance / mSlowRadius;
+	// Otherwise, calculate a scaled speed
+	else
+	{
+		direction *= pOwner->getMaxSpeed() * distance / SLOW_RADIUS;
 	}
 
 	PhysicsData data = pOwner->getPhysicsComponent()->getData();
-	data.acc = diff;
-	data.rotVel = 1.0f;
+
+	data.vel = direction;
+
+	// steering.linear = targetVelocity - character.velocity (book pg. 62)
+	// data.acc = pOwner->getPhysicsComponent()->getVelocity();
+	// data.acc /= mTimeToTarget;
+	// 
+	// if (data.acc.getLength() > data.maxAccMagnitude)
+	// {
+	// 	data.acc.normalize();
+	// 	data.acc *= data.maxAccMagnitude;
+	// }
+
+	data.rotVel = 0.0f;
+
+	std::cout << "test: " << data.acc << std::endl;
+
 	this->mData = data;
 	return this;
 }

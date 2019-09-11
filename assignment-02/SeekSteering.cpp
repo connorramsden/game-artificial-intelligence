@@ -47,6 +47,7 @@ Steering* SeekSteering::getSteering()
 		diff = pOwner->getPositionComponent()->getPosition() - mTargetLoc;
 	}
 
+	// Go as fast as possible
 	diff.normalize();
 	diff *= pOwner->getMaxAcc();
 
