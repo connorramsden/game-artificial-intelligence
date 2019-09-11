@@ -29,19 +29,16 @@ public:
 
 	//accessors
 	void setTargetLoc(const Vector2D& loc) { mTargetLoc = loc; };
-	void setTargetRot(const float rot) { mTargetRot = rot; };
 	const Vector2D& getTargetLoc() const { return mTargetLoc; };
-	const float getTargetRot() const { return mTargetRot; };
 	void setTargetID(const UnitID& id) { mTargetID = id; };
 	const UnitID& getTargetID() const { return mTargetID; };
 	void setOwnerID(const UnitID& id) { mOwnerID = id; };
-	//void setData(const PhysicsData& data) { mData = data; };
+	void setData(const PhysicsData& data) { mData = data; };
 	const PhysicsData& getData() const { return mData; };
 	void update();
 protected:
 	SteeringType mType;
 	Vector2D mTargetLoc;
-	float mTargetRot;
 	UnitID mTargetID;
 	UnitID mOwnerID;
 	PhysicsData mData;

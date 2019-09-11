@@ -16,7 +16,6 @@ struct SteeringData : public Trackable
 		:type(theType), targetLoc(theTargetLoc), ownerID(theOwner), targetID(theTarget){};
 	Steering::SteeringType type;
 	Vector2D targetLoc;
-	float targetRot;
 	UnitID ownerID;
 	UnitID targetID;
 };
@@ -29,14 +28,12 @@ public:
 	//getters and setters
 	Steering::SteeringType getType() const { return mData.type; };
 	const Vector2D& getTargetLoc() const { return mData.targetLoc; };
-	const float getTargetRot() const { return mData.targetRot; };
 	UnitID getOwnerID() const { return mData.ownerID; };
 	UnitID getTargetID() const { return mData.targetID; };
 	ComponentID getPhysicsComponentID() const { return mPhysicsComponentID; };
 	const SteeringData& getData() const { return mData; };
 	void setData(const SteeringData& data);
 	void setTargetLoc(const Vector2D& pos) { mData.targetLoc = pos; };
-	void setTargetRot(const float rot) { mData.targetRot = rot; };
 	void setTargetUnitID(const UnitID& id) { mData.targetID = id; };
 	void applySteering(PhysicsComponent& physicsComponent);
 

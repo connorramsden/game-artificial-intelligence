@@ -14,52 +14,24 @@ FaceSteering::FaceSteering(const UnitID& ownerID, const Vector2D& targetLoc, con
 
 Steering* FaceSteering::getSteering()
 {
-	float rotation;
-	float rotationSize;
+	Vector2D rotation;
 	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
 
 	if (mTargetID != INVALID_UNIT_ID)
 	{
 		Unit* pTarget = gpGame->getUnitManager()->getUnit(mTargetID);
 		assert(pTarget != nullptr);
-		mTargetRot = pTarget->getPositionComponent()->getFacing();
+		mTargetLoc = pTarget->getPositionComponent()->getPosition();
 	}
 	
-	// Get naive direction to target
-	rotation = mTargetRot - pOwner->getPositionComponent()->getFacing();
-	rotation = mapToRange(rotation);
-	rotationSize = abs(rotation);
-
-	if (rotationSize < TARGET_RADIUS)
-	{
-		rotation = 0;
-	}
-	if (rotationSize > SLOW_RADIUS)
-	{
-		rotation = pOwner->getMaxRotVel();
-	}
-	else
-	{
-		rotation = pOwner->getMaxRotVel() / SLOW_RADIUS;
-	}
-
-	rotation *= rotation / rotationSize;
-
 	PhysicsData data = pOwner->getPhysicsComponent()->getData();
-	data.rotVel = rotation;
-	// data.rotAcc = abs(data.rotVel);
-
-	// if (data.rotAcc > data.maxRotAcc)
-	// {
-	// 	data.rotVel /= data.rotAcc;
-	// 	data.rotVel *= pOwner->getMaxRotAcc();
-	// }
-
 	this->mData = data;
+
 	return this;
 }
 
-float FaceSteering::mapToRange(float rotation)
+float FaceSteering::mapToRange(float angleOne, float angleTwo)
 {
-	return float(rotation - (-PI) * floor(rotation / PI));
+	float distance = angleOne - angleTwo;
+	return fmod(distance + PI, 2.0f * PI) - PI;
 }

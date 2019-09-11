@@ -46,21 +46,14 @@ Steering* ArriveSteering::getSteering()
 	// Otherwise, calculate a scaled speed
 	else
 	{
+		std::cout << "Dist: " << distance << std::endl;
 		direction *= pOwner->getMaxSpeed() * distance / SLOW_RADIUS;
 	}
 
 	PhysicsData data = pOwner->getPhysicsComponent()->getData();
-
+	
 	// targetVelocity = direction
 	data.vel = direction;
-
-	data.acc = targetVel - data.vel;
-	data.acc /= mTimeToTarget;
-	
-	if (data.acc.getLength() > pOwner->getMaxAcc()) {
-		data.acc.normalize();
-		data.acc *= pOwner->getMaxAcc();
-	}
 	
 	data.rotVel = 0.0f;
 	data.rotAcc = 0.0f;

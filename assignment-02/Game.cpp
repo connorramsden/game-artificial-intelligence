@@ -119,7 +119,7 @@ bool Game::init()
 	{
 		mpSpriteManager->createAndManageSprite(TARGET_SPRITE_ID, pTargetBuffer, 0, 0, (float)pTargetBuffer->getWidth(), (float)pTargetBuffer->getHeight());
 	}
-	
+
 	//setup units
 	Unit* pUnit = NULL;
 

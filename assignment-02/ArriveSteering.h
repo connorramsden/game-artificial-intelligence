@@ -9,6 +9,5 @@ protected:
 
 private:
 	const float TARGET_RADIUS = 1.0f;
-	const float SLOW_RADIUS = 100.0f;
-	float mTimeToTarget = 0.1f;
+	const float SLOW_RADIUS = 400.0f;
 };
