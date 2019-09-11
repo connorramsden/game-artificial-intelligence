@@ -19,13 +19,15 @@ ArriveSteering::ArriveSteering(const UnitID& ownerID, const Vector2D& targetLoc,
 Steering* ArriveSteering::getSteering()
 {
 	Vector2D direction;
-	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
+	Vector2D targetVel;
+	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);	
 
 	if (mTargetID != INVALID_UNIT_ID)
 	{
 		Unit* pTarget = gpGame->getUnitManager()->getUnit(mTargetID);
 		assert(pTarget != nullptr);
 		mTargetLoc = pTarget->getPositionComponent()->getPosition();
+		targetVel = pTarget->getPhysicsComponent()->getVelocity();
 	}
 
 	// Store Direction & Distance to the current target
@@ -36,7 +38,7 @@ Steering* ArriveSteering::getSteering()
 	if (distance < TARGET_RADIUS)
 		direction = 0;
 
-	// If we are outside the slow radius, go as fast as possible
+	// If we are outside the slow radius, go maximum speed
 	if (distance > SLOW_RADIUS)
 	{
 		direction *= pOwner->getMaxSpeed();
@@ -49,21 +51,19 @@ Steering* ArriveSteering::getSteering()
 
 	PhysicsData data = pOwner->getPhysicsComponent()->getData();
 
+	// targetVelocity = direction
 	data.vel = direction;
 
-	// steering.linear = targetVelocity - character.velocity (book pg. 62)
-	// data.acc = pOwner->getPhysicsComponent()->getVelocity();
-	// data.acc /= mTimeToTarget;
-	// 
-	// if (data.acc.getLength() > data.maxAccMagnitude)
-	// {
-	// 	data.acc.normalize();
-	// 	data.acc *= data.maxAccMagnitude;
-	// }
-
+	data.acc = targetVel - data.vel;
+	data.acc /= mTimeToTarget;
+	
+	if (data.acc.getLength() > pOwner->getMaxAcc()) {
+		data.acc.normalize();
+		data.acc *= pOwner->getMaxAcc();
+	}
+	
 	data.rotVel = 0.0f;
-
-	std::cout << "test: " << data.acc << std::endl;
+	data.rotAcc = 0.0f;
 
 	this->mData = data;
 	return this;

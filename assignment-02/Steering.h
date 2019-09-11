@@ -8,9 +8,7 @@
 #include "defines.h"
 #include "PhysicsComponent.h"
 
-
-
-class Steering: public Trackable
+class Steering : public Trackable
 {
 public:
 	enum SteeringType
@@ -26,12 +24,14 @@ public:
 	};
 
 	//constructors and destructors
-	Steering( SteeringType type = INVALID_TYPE ):mType(type), mTargetLoc(ZERO_VECTOR2D), mTargetID(INVALID_UNIT_ID), mOwnerID(INVALID_UNIT_ID), mData(PhysicsComponent::getZeroPhysicsData()) {};
-	virtual ~Steering(){};
+	Steering(SteeringType type = INVALID_TYPE) :mType(type), mTargetLoc(ZERO_VECTOR2D), mTargetID(INVALID_UNIT_ID), mOwnerID(INVALID_UNIT_ID), mData(PhysicsComponent::getZeroPhysicsData()) {};
+	virtual ~Steering() {};
 
 	//accessors
 	void setTargetLoc(const Vector2D& loc) { mTargetLoc = loc; };
+	void setTargetRot(const float rot) { mTargetRot = rot; };
 	const Vector2D& getTargetLoc() const { return mTargetLoc; };
+	const float getTargetRot() const { return mTargetRot; };
 	void setTargetID(const UnitID& id) { mTargetID = id; };
 	const UnitID& getTargetID() const { return mTargetID; };
 	void setOwnerID(const UnitID& id) { mOwnerID = id; };
@@ -41,6 +41,7 @@ public:
 protected:
 	SteeringType mType;
 	Vector2D mTargetLoc;
+	float mTargetRot;
 	UnitID mTargetID;
 	UnitID mOwnerID;
 	PhysicsData mData;
