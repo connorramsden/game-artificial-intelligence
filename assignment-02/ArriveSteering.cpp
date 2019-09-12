@@ -29,6 +29,7 @@ Steering* ArriveSteering::getSteering()
 		Unit* pTarget = gpGame->getUnitManager()->getUnit(mTargetID);
 		assert(pTarget != nullptr);
 		mTargetLoc = pTarget->getPositionComponent()->getPosition();
+		targetVel = pTarget->getPhysicsComponent()->getVelocity();
 	}
 
 	// Store Direction & Distance to the current target
