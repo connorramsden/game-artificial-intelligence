@@ -6,7 +6,6 @@
 #include "UnitManager.h"
 #include "Unit.h"
 
-
 SeekSteering::SeekSteering(const UnitID& ownerID, const Vector2D& targetLoc, const UnitID& targetID, bool shouldFlee /*= false*/)
 	: Steering()
 {
@@ -49,11 +48,13 @@ Steering* SeekSteering::getSteering()
 
 	// Go as fast as possible
 	diff.normalize();
-	diff *= pOwner->getMaxAcc();
-
+	
 	PhysicsData data = pOwner->getPhysicsComponent()->getData();
+
+	diff *= pOwner->getMaxAcc();
 	data.acc = diff;
 	data.rotVel = 1.0f;
+
 	this->mData = data;
 	return this;
 }

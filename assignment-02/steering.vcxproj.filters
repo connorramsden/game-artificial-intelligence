@@ -61,6 +61,9 @@
     <ClCompile Include="WanderAndChaseSteering.cpp">
       <Filter>Source Files\Steering</Filter>
     </ClCompile>
+    <ClCompile Include="WanderSteering.cpp">
+      <Filter>Source Files\Steering</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Steering.h">
@@ -123,6 +126,9 @@
     <ClInclude Include="FaceSteering.h">
       <Filter>Header Files\Steering</Filter>
     </ClInclude>
+    <ClInclude Include="WanderSteering.h">
+      <Filter>Header Files\Steering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
@@ -167,8 +173,5 @@
     <Filter Include="Header Files\Components">
       <UniqueIdentifier>{3c9b3ca9-ee14-4c27-8903-1ed3fce18cb3}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

@@ -19,7 +19,10 @@ ArriveSteering::ArriveSteering(const UnitID& ownerID, const Vector2D& targetLoc,
 Steering* ArriveSteering::getSteering()
 {
 	Vector2D direction;
+	Vector2D targetVel;
+	float distance, targetSpeed;
 	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
+	PhysicsData data = pOwner->getPhysicsComponent()->getData();
 
 	if (mTargetID != INVALID_UNIT_ID)
 	{
@@ -29,41 +32,39 @@ Steering* ArriveSteering::getSteering()
 	}
 
 	// Store Direction & Distance to the current target
-	direction = mTargetLoc - pOwner->getPositionComponent()->getPosition();
-	float distance = direction.getLength();
+	direction = mTargetLoc - pOwner->getPosition();
+	distance = direction.getLength();
 
 	// If we are already at our target, return nothing
 	if (distance < TARGET_RADIUS)
-		direction = 0;
+		return nullptr;
 
-	// If we are outside the slow radius, go as fast as possible
+	// If we are outside the slow radius, go maximum speed
 	if (distance > SLOW_RADIUS)
 	{
-		direction *= pOwner->getMaxSpeed();
+		targetSpeed = pOwner->getMaxSpeed();
 	}
 	// Otherwise, calculate a scaled speed
 	else
 	{
-		direction *= pOwner->getMaxSpeed() * distance / SLOW_RADIUS;
+		targetSpeed = pOwner->getMaxSpeed() * distance / SLOW_RADIUS;
 	}
+	
+	// targetVelocity = direction
+	targetVel = direction;
+	targetVel.normalize();
+	targetVel *= targetSpeed;
 
-	PhysicsData data = pOwner->getPhysicsComponent()->getData();
+	data.acc = targetVel - pOwner->getPhysicsComponent()->getVelocity();
+	data.acc /= TIME_TO_TARGET;
 
-	data.vel = direction;
-
-	// steering.linear = targetVelocity - character.velocity (book pg. 62)
-	// data.acc = pOwner->getPhysicsComponent()->getVelocity();
-	// data.acc /= mTimeToTarget;
-	// 
-	// if (data.acc.getLength() > data.maxAccMagnitude)
-	// {
-	// 	data.acc.normalize();
-	// 	data.acc *= data.maxAccMagnitude;
-	// }
-
-	data.rotVel = 0.0f;
-
-	std::cout << "test: " << data.acc << std::endl;
+	if (data.acc.getLength() > data.maxAccMagnitude)
+	{
+		data.acc.normalize();
+		data.acc *= data.maxAccMagnitude;
+	}
+	
+	data.rotAcc = 0.0f;
 
 	this->mData = data;
 	return this;

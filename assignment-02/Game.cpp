@@ -119,15 +119,15 @@ bool Game::init()
 	{
 		mpSpriteManager->createAndManageSprite(TARGET_SPRITE_ID, pTargetBuffer, 0, 0, (float)pTargetBuffer->getWidth(), (float)pTargetBuffer->getHeight());
 	}
-	
+
 	//setup units
 	Unit* pUnit = NULL;
 
 	if (pArrowSprite)
 	{
-		pUnit = mpUnitManager->createPlayerUnit(*pArrowSprite, false);
+		pUnit = mpUnitManager->createPlayerUnit(*pArrowSprite, false, PositionData(Vector2D(getGraphicsSystem()->getDisplayWidth() / 2.0f, getGraphicsSystem()->getDisplayHeight() / 2.0f), 0.0f));
 		pUnit->setShowTarget(true);
-		pUnit->setSteering(Steering::ARRIVE, ZERO_VECTOR2D);
+		pUnit->setSteering(Steering::FACE, ZERO_VECTOR2D);
 	}
 
 	//create 2 enemies
