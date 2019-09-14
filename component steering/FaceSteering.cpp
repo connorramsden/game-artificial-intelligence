@@ -15,6 +15,9 @@ FaceSteering::FaceSteering(const UnitID& ownerID, const Vector2D& targetLoc, con
 	setTargetLoc(targetLoc);
 }
 
+// Borrowed faceSteering math from:
+// https://github.com/Jagman926/MontrealAIForGames/blob/FlockingBranch/GameAI/component%20steering%20SDL/FaceSteering.cpp
+// Lines 32 - 39
 Steering* FaceSteering::getSteering()
 {
 	Vector2D diff;
@@ -29,50 +32,43 @@ Steering* FaceSteering::getSteering()
 		mTargetLoc = pTarget->getPositionComponent()->getPosition();
 	}
 
+	// Start Borrowed Math
 	diff = mTargetLoc - pOwner->getPosition();
-	float targetOrientation = atan2(diff.getX(), -diff.getY());
+	float targetOrientation = atan2(diff.getX(), -diff.getY()); // this line is changed from the above link, due to the link's math not working the right way
 
 	rotation = targetOrientation - pOwner->getFacing();
 
-	mappedRotation = mapToRange(rotation);
+	mappedRotation = float( mapToRangeMinusPiToPi(rotation));
 	rotationSize = abs(mappedRotation);
+	// End Borrowed Math
 
+	// Formula from pg. 64 & 65 in the textbook
+	// Start Book Formula
 	if (rotationSize < TARGET_RADIUS)
 		targetRotation = 0.0f;
-	
 	if (rotationSize > SLOW_RADIUS)
 	{
 		targetRotation = pOwner->getMaxRotAcc();
 	}
 	else
 		targetRotation = pOwner->getMaxRotAcc() * rotationSize / SLOW_RADIUS;
-	
+
 	targetRotation *= rotation / rotationSize;
 
 	data.rotAcc = targetRotation - pOwner->getPhysicsComponent()->getRotationalVelocity();
 	data.rotAcc /= TIME_TO_TARGET;
-	
+
 	float angularAcceleration = abs(pOwner->getPhysicsComponent()->getRotationalAcceleration());
 	if (angularAcceleration > pOwner->getMaxRotAcc())
 	{
 		data.rotAcc /= angularAcceleration;
 		data.rotAcc *= pOwner->getMaxRotAcc();
 	}
-	 	
+	// End Book Formula
+
+	data.acc = 0.0f;
+
 	this->mData = data;
 
 	return this;
-}
-
-float FaceSteering::mapToRange(float rotation)
-{
-	float convertedRotation;
-	convertedRotation = fmod((rotation), 2.0f * PI);
-
-	if (convertedRotation > PI)
-		convertedRotation = (convertedRotation - PI) * -1.0f;
-	else if (convertedRotation < -PI)
-		convertedRotation = (convertedRotation + PI) * -1.0f;
-
-	return convertedRotation;
 }

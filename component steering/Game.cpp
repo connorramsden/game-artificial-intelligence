@@ -127,7 +127,7 @@ bool Game::init()
 	{
 		pUnit = mpUnitManager->createPlayerUnit(*pArrowSprite, false, PositionData(Vector2D(getGraphicsSystem()->getDisplayWidth() / 2.0f, getGraphicsSystem()->getDisplayHeight() / 2.0f), 0.0f));
 		pUnit->setShowTarget(true);
-		pUnit->setSteering(Steering::FACE, ZERO_VECTOR2D);
+		pUnit->setSteering(Steering::WANDER, ZERO_VECTOR2D);
 	}
 
 	//create 2 enemies

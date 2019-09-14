@@ -49,10 +49,10 @@
     <ClCompile Include="UnitStateMessage.cpp">
       <Filter>Source Files\Messaging</Filter>
     </ClCompile>
-    <ClCompile Include="ArriveSteering.cpp">
+    <ClCompile Include="ArriveAndFaceSteering.cpp">
       <Filter>Source Files\Steering</Filter>
     </ClCompile>
-    <ClCompile Include="ArriveAndFaceSteering.cpp">
+    <ClCompile Include="ArriveSteering.cpp">
       <Filter>Source Files\Steering</Filter>
     </ClCompile>
     <ClCompile Include="FaceSteering.cpp">
@@ -114,19 +114,19 @@
     <ClInclude Include="UnitStateMessage.h">
       <Filter>Header Files\Messaging</Filter>
     </ClInclude>
-    <ClInclude Include="ArriveSteering.h">
-      <Filter>Header Files\Steering</Filter>
-    </ClInclude>
-    <ClInclude Include="WanderAndChaseSteering.h">
-      <Filter>Header Files\Steering</Filter>
-    </ClInclude>
     <ClInclude Include="ArriveAndFaceSteering.h">
+      <Filter>Header Files\Steering</Filter>
+    </ClInclude>
+    <ClInclude Include="ArriveSteering.h">
       <Filter>Header Files\Steering</Filter>
     </ClInclude>
     <ClInclude Include="FaceSteering.h">
       <Filter>Header Files\Steering</Filter>
     </ClInclude>
     <ClInclude Include="WanderSteering.h">
+      <Filter>Header Files\Steering</Filter>
+    </ClInclude>
+    <ClInclude Include="WanderAndChaseSteering.h">
       <Filter>Header Files\Steering</Filter>
     </ClInclude>
   </ItemGroup>
