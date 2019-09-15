@@ -26,7 +26,7 @@ public:
 	virtual ~Steering(){};
 
 	//accessors
-	void setTargetLoc(const Vector2D& loc) { mTargetLoc = loc; };
+	virtual void setTargetLoc(const Vector2D& loc) { mTargetLoc = loc; };
 	const Vector2D& getTargetLoc() const { return mTargetLoc; };
 	void setTargetID(const UnitID& id) { mTargetID = id; };
 	const UnitID& getTargetID() const { return mTargetID; };
