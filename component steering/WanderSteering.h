@@ -4,11 +4,12 @@
 class WanderSteering : public Steering
 {
 public:
-	WanderSteering(const UnitID& ownerID);
-	~WanderSteering() { delete mSubSteering; mSubSteering = nullptr; };
+	WanderSteering(const UnitID& ownerID, const Vector2D& targetLoc, const UnitID& targetID = INVALID_UNIT_ID);
+	~WanderSteering() { delete mpSubSteering; }
 protected:
 	virtual Steering* getSteering();
-	Steering* mSubSteering;
+	void setNewTarget();
+	Steering* mpSubSteering;
 	Vector2D getRandomPosition();
 
 private:

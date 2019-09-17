@@ -13,7 +13,7 @@ WanderSteering::WanderSteering(const UnitID& ownerID) : Steering()
 	mType = Steering::WANDER;
 	setOwnerID(ownerID);
 	setTargetLoc(getRandomPosition());
-	mSubSteering = new ArriveSteering(mOwnerID, mTargetLoc);
+	mpSubSteering = new ArriveAndFaceSteering(mOwnerID, mTargetLoc);
 }
 
 Steering* WanderSteering::getSteering()
@@ -33,11 +33,22 @@ Steering* WanderSteering::getSteering()
 		// Update the sub-steering system to target the new location
 		mSubSteering->setTargetLoc(mTargetLoc);
 	}
-	
+
+	// Update the sub-steering system
+	mpSubSteering->update();
+
+	PhysicsData subSteerData = mpSubSteering->getData();
+
 	// Set this behaviour's data to the substeering system's data
 	this->mData = arriveData;
 
 	return this;
+}
+
+void WanderSteering::setNewTarget()
+{
+	setTargetLoc(getRandomPosition());
+	mpSubSteering->setTargetLoc(mTargetLoc);
 }
 
 Vector2D WanderSteering::getRandomPosition()
