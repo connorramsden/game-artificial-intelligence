@@ -19,8 +19,8 @@ public:
 		ARRIVE,
 		FACE,
 		WANDER,
-		WANDER_AND_CHASE,
 		ARRIVE_AND_FACE,
+		WANDER_AND_CHASE
 	};
 
 	//constructors and destructors
