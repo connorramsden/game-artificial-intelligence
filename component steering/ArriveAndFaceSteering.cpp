@@ -11,6 +11,8 @@ ArriveAndFaceSteering::ArriveAndFaceSteering(const UnitID& ownerID, const Vector
 	setOwnerID(ownerID);
 	setTargetLoc(targetLoc);
 	setTargetID(targetID);
+	mSubSteeringArrive = new ArriveSteering(ownerID, targetLoc, targetID);
+	mSubSteeringFace = new FaceSteering(ownerID, targetLoc, targetID);
 }
 
 void ArriveAndFaceSteering::cleanUp()
