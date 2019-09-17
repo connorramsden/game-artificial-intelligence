@@ -7,7 +7,6 @@ public:
 
 protected:
 	virtual Steering* getSteering();
-	float mapToRange(float rotation);
 
 private:
 	const float TARGET_RADIUS = 0.1f;

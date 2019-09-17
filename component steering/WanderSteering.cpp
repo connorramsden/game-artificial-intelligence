@@ -3,12 +3,11 @@
 #include "Game.h"
 #include "UnitManager.h"
 #include "Unit.h"
-#include "FaceSteering.h"
-#include "ArriveSteering.h"
+#include "ArriveAndFaceSteering.h"
 #include "GraphicsSystem.h"
 #include <random>
 
-WanderSteering::WanderSteering(const UnitID& ownerID) : Steering()
+WanderSteering::WanderSteering(const UnitID& ownerID, const Vector2D& targetLoc, const UnitID& targetID) : Steering()
 {
 	mType = Steering::WANDER;
 	setOwnerID(ownerID);
@@ -21,17 +20,17 @@ Steering* WanderSteering::getSteering()
 	Vector2D diff;
 	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
 	PhysicsData data = pOwner->getPhysicsComponent()->getData();
-	PhysicsData arriveData = mSubSteering->getData();
+	PhysicsData arriveData = mpSubSteering->getData();
 
 	// Update the sub-steering system
-	mSubSteering->update();
+	mpSubSteering->update();
 	
 	if (Vector2D(mTargetLoc - pOwner->getPosition()).getLength() < 100.0f)
 	{
 		// Set the target location to a new random position
 		setTargetLoc(getRandomPosition());
 		// Update the sub-steering system to target the new location
-		mSubSteering->setTargetLoc(mTargetLoc);
+		mpSubSteering->setTargetLoc(mTargetLoc);
 	}
 
 	// Update the sub-steering system

@@ -11,8 +11,5 @@ protected:
 	void setNewTarget();
 	Steering* mpSubSteering;
 	Vector2D getRandomPosition();
-
-private:
-	float mWanderOffset, mWanderRadius, mWanderRate, mWanderOrientation;
 };
 

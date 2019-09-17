@@ -66,6 +66,7 @@ Steering* FaceSteering::getSteering()
 	}
 	// End Book Formula
 
+	data.vel = 0.0f;
 	data.acc = 0.0f;
 
 	this->mData = data;

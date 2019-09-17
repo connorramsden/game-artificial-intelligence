@@ -11,14 +11,12 @@ ArriveAndFaceSteering::ArriveAndFaceSteering(const UnitID& ownerID, const Vector
 	setOwnerID(ownerID);
 	setTargetLoc(targetLoc);
 	setTargetID(targetID);
-	mpSubSteeringArrive = new ArriveSteering(ownerID, targetLoc, targetID);
-	mpSubSteeringFace = new FaceSteering(ownerID, targetLoc, targetID);
 }
 
 Steering* ArriveAndFaceSteering::getSteering()
 {
-	mSubSteeringArrive = new ArriveSteering(mOwnerID, mTargetLoc, mTargetID);
-	mSubSteeringFace = new FaceSteering(mOwnerID, mTargetLoc, mTargetID);
+	mpSubSteeringArrive = new ArriveSteering(mOwnerID, mTargetLoc, mTargetID);
+	mpSubSteeringFace = new FaceSteering(mOwnerID, mTargetLoc, mTargetID);
 
 	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
 	PhysicsData data = pOwner->getPhysicsComponent()->getData();
@@ -34,6 +32,9 @@ Steering* ArriveAndFaceSteering::getSteering()
 	data.acc = arriveData.acc;
 	data.rotVel = faceData.rotVel;
 	data.rotAcc = faceData.rotAcc;
+
+	delete mpSubSteeringArrive;
+	delete mpSubSteeringFace;
 
 	this->mData = data;
 	return this;
