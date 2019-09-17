@@ -1,14 +1,11 @@
 #include "ComponentManager.h"
 #include "SteeringComponent.h"
 #include "SeekSteering.h"
-<<<<<<< Updated upstream
-=======
 #include "ArriveSteering.h"
 #include "FaceSteering.h"
 #include "WanderSteering.h"
 #include "ArriveAndFaceSteering.h"
 #include "WanderAndChaseSteering.h"
->>>>>>> Stashed changes
 
 SteeringComponent::SteeringComponent(const ComponentID& id, const ComponentID& physicsComponentID) 
 	:Component(id)
@@ -51,13 +48,12 @@ void SteeringComponent::setData(const SteeringData& data)
 		}
 		case Steering::FLEE:
 		{
+			delete mpSteering;
 			mpSteering = new SeekSteering(data.ownerID, data.targetLoc, data.targetID, true);
 			break;
 		}
 		case Steering::ARRIVE:
 		{
-<<<<<<< Updated upstream
-=======
 			delete mpSteering;
 			mpSteering = new ArriveSteering(data.ownerID, data.targetLoc, data.targetID);
 			break;
@@ -84,7 +80,6 @@ void SteeringComponent::setData(const SteeringData& data)
 		{
 			delete mpSteering;
 			mpSteering = new WanderAndChaseSteering(data.ownerID, data.targetLoc, data.targetID);
->>>>>>> Stashed changes
 			break;
 		}
 		default:

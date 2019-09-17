@@ -20,6 +20,7 @@ class Unit : public Trackable
 public:
 	void draw() const;
 	float getFacing() const;
+	Vector2D getPosition() const;
 	void update(float elapsedTime){};
 
 	PositionComponent* getPositionComponent() const;

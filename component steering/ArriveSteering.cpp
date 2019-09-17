@@ -64,6 +64,8 @@ Steering* ArriveSteering::getSteering()
 		data.acc *= data.maxAccMagnitude;
 	}
 	
+	data.rotAcc = 0.0f;
+
 	this->mData = data;
 	return this;
 }

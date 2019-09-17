@@ -1,4 +1,3 @@
-#include <Trackable.h>
 #include "Steering.h"
 
 class SeekSteering : public Steering

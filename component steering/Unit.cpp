@@ -52,6 +52,13 @@ float Unit::getFacing() const
 	return pPosition->getFacing();
 }
 
+Vector2D Unit::getPosition() const
+{
+	PositionComponent* pPosition = getPositionComponent();
+	assert(pPosition != nullptr);
+	return pPosition->getPosition();
+}
+
 PositionComponent* Unit::getPositionComponent() const
 {
 	return mpPositionComponent;

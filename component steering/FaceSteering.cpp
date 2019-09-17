@@ -17,7 +17,7 @@ FaceSteering::FaceSteering(const UnitID& ownerID, const Vector2D& targetLoc, con
 
 // Borrowed faceSteering math from:
 // https://github.com/Jagman926/MontrealAIForGames/blob/FlockingBranch/GameAI/component%20steering%20SDL/FaceSteering.cpp
-// Lines 32 - 39 borrowed (35-43 in my code)
+// Lines 32 - 39
 Steering* FaceSteering::getSteering()
 {
 	Vector2D diff;
@@ -65,7 +65,10 @@ Steering* FaceSteering::getSteering()
 		data.rotAcc *= pOwner->getMaxRotAcc();
 	}
 	// End Book Formula
-	
+
+	data.vel = 0.0f;
+	data.acc = 0.0f;
+
 	this->mData = data;
 
 	return this;

@@ -6,7 +6,6 @@
 #include "UnitManager.h"
 #include "Unit.h"
 
-
 SeekSteering::SeekSteering(const UnitID& ownerID, const Vector2D& targetLoc, const UnitID& targetID, bool shouldFlee /*= false*/)
 	: Steering()
 {
@@ -29,6 +28,7 @@ Steering* SeekSteering::getSteering()
 	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
 	//are we seeking a location or a unit?
 	
+	// Access target's location
 	if (mTargetID != INVALID_UNIT_ID)
 	{
 		//seeking unit
@@ -46,12 +46,15 @@ Steering* SeekSteering::getSteering()
 		diff = pOwner->getPositionComponent()->getPosition() - mTargetLoc;
 	}
 
+	// Go as fast as possible
 	diff.normalize();
-	diff *= pOwner->getMaxAcc();
-
+	
 	PhysicsData data = pOwner->getPhysicsComponent()->getData();
+
+	diff *= pOwner->getMaxAcc();
 	data.acc = diff;
 	data.rotVel = 1.0f;
+
 	this->mData = data;
 	return this;
 }

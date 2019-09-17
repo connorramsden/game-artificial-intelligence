@@ -11,7 +11,7 @@ WanderSteering::WanderSteering(const UnitID& ownerID, const Vector2D& targetLoc,
 	mType = Steering::WANDER;
 	setOwnerID(ownerID);
 	setTargetLoc(getRandomPosition());
-	mSubSteering = new ArriveAndFaceSteering(mOwnerID, mTargetLoc);
+	mpSubSteering = new ArriveAndFaceSteering(mOwnerID, mTargetLoc);
 }
 
 Steering* WanderSteering::getSteering()
@@ -19,19 +19,26 @@ Steering* WanderSteering::getSteering()
 	Vector2D diff;
 	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
 	PhysicsData data = pOwner->getPhysicsComponent()->getData();
+	PhysicsData arriveData = mpSubSteering->getData();
 
+	// Update the sub-steering system
+	mpSubSteering->update();
+	
 	if (Vector2D(mTargetLoc - pOwner->getPosition()).getLength() < 100.0f)
 	{
-		setNewTarget();
+		// Set the target location to a new random position
+		setTargetLoc(getRandomPosition());
+		// Update the sub-steering system to target the new location
+		mpSubSteering->setTargetLoc(mTargetLoc);
 	}
 
 	// Update the sub-steering system
-	mSubSteering->update();
+	mpSubSteering->update();
 
-	PhysicsData subSteerData = mSubSteering->getData();
+	PhysicsData subSteerData = mpSubSteering->getData();
 
 	// Set this behaviour's data to the substeering system's data
-	this->mData = subSteerData;
+	this->mData = arriveData;
 
 	return this;
 }
@@ -39,7 +46,7 @@ Steering* WanderSteering::getSteering()
 void WanderSteering::setNewTarget()
 {
 	setTargetLoc(getRandomPosition());
-	mSubSteering->setTargetLoc(mTargetLoc);
+	mpSubSteering->setTargetLoc(mTargetLoc);
 }
 
 Vector2D WanderSteering::getRandomPosition()
