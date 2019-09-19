@@ -6,8 +6,8 @@
 class DataLoader : public Trackable
 {
 public:
-	DataLoader( const std::string& filename, DataRepository* pDepository );
-	~DataLoader(){};
+	DataLoader(const std::string& filename, DataRepository* pDepository);
+	~DataLoader() {};
 private:
 
 };
@@ -30,7 +30,14 @@ public:
 		PLAYER_IMG,
 		ENEMY_IMG,
 		TARGET_IMG,
-		GAME_FONT
+		GAME_FONT,
+		NUM_UNITS_CREATE,
+		SLOW_RADIUS_ARRIVE,
+		TARGET_RADIUS_ARRIVE,
+		TIME_TO_TARGET_ARRIVE,
+		SLOW_RADIUS_FACE,
+		TARGET_RADIUS_FACE,
+		TIME_TO_TARGET_FACE,
+		CHASE_DISTANCE
 	};
-
 };

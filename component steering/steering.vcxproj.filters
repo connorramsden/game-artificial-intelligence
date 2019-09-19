@@ -64,6 +64,9 @@
     <ClCompile Include="WanderSteering.cpp">
       <Filter>Source Files\Steering</Filter>
     </ClCompile>
+    <ClCompile Include="ExitMessage.cpp">
+      <Filter>Source Files\Messaging</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Steering.h">
@@ -123,11 +126,14 @@
     <ClInclude Include="FaceSteering.h">
       <Filter>Header Files\Steering</Filter>
     </ClInclude>
+    <ClInclude Include="WanderAndChaseSteering.h">
+      <Filter>Header Files\Steering</Filter>
+    </ClInclude>
     <ClInclude Include="WanderSteering.h">
       <Filter>Header Files\Steering</Filter>
     </ClInclude>
-    <ClInclude Include="WanderAndChaseSteering.h">
-      <Filter>Header Files\Steering</Filter>
+    <ClInclude Include="ExitMessage.h">
+      <Filter>Header Files\Messaging</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

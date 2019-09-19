@@ -2,7 +2,7 @@
 #include "Game.h"
 #include "UnitManager.h"
 #include "Unit.h"
-#include "ArriveAndFaceSteering.h"
+#include "ArriveSteering.h"
 #include "GraphicsSystem.h"
 #include <random>
 
@@ -11,34 +11,34 @@ WanderSteering::WanderSteering(const UnitID& ownerID, const Vector2D& targetLoc,
 	mType = Steering::WANDER;
 	setOwnerID(ownerID);
 	setTargetLoc(getRandomPosition());
-	mpSubSteering = new ArriveAndFaceSteering(mOwnerID, mTargetLoc);
+	setTargetID(targetID);
 }
 
 Steering* WanderSteering::getSteering()
 {
-	Vector2D diff;
 	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
-	PhysicsData data = pOwner->getPhysicsComponent()->getData();
-	PhysicsData arriveData = mpSubSteering->getData();
-
-	// Update the sub-steering system
-	mpSubSteering->update();
 	
-	if (Vector2D(mTargetLoc - pOwner->getPosition()).getLength() < 100.0f)
+	if (mTargetID != INVALID_UNIT_ID)
 	{
-		// Set the target location to a new random position
-		setTargetLoc(getRandomPosition());
-		// Update the sub-steering system to target the new location
-		mpSubSteering->setTargetLoc(mTargetLoc);
+		Unit* pTarget = gpGame->getUnitManager()->getUnit(mTargetID);
+		assert(pTarget != nullptr);
+		mTargetLoc = pTarget->getPosition();
 	}
 
-	// Update the sub-steering system
+	mpSubSteering = new ArriveSteering(mOwnerID, mTargetLoc, mTargetID);
 	mpSubSteering->update();
 
-	PhysicsData subSteerData = mpSubSteering->getData();
+	if (Vector2D(mTargetLoc - pOwner->getPosition()).getLength() < 100.0f)
+	{
+		setNewTarget();
+	}
+
+	PhysicsData arriveData = mpSubSteering->getData();
 
 	// Set this behaviour's data to the substeering system's data
 	this->mData = arriveData;
+
+	delete mpSubSteering;
 
 	return this;
 }

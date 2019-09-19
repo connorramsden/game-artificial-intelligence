@@ -8,23 +8,23 @@ using namespace std;
 
 DataLoader::DataLoader(const string& filename, DataRepository* pRepository)
 {
-	ifstream input( filename );
-	if( input.good() )
+	ifstream input(filename);
+	if (input.good())
 	{
-		while( !input.eof() )
+		while (!input.eof())
 		{
 			string line;
-			getline( input, line);
-			stringstream sstream( line );
+			getline(input, line);
+			stringstream sstream(line);
 			string id;
 			sstream >> id;
 
-			if( id == "screen_size" )
+			if (id == "screen_size")
 			{
 				UINT width, height;
 				sstream >> width >> height;
-				pRepository->addEntry( DataKeyEnum::SCREEN_WIDTH, width );
-				pRepository->addEntry( DataKeyEnum::SCREEN_HEIGHT, height );
+				pRepository->addEntry(DataKeyEnum::SCREEN_WIDTH, width);
+				pRepository->addEntry(DataKeyEnum::SCREEN_HEIGHT, height);
 			}
 			else if (id == "target_fps")
 			{
@@ -91,6 +91,54 @@ DataLoader::DataLoader(const string& filename, DataRepository* pRepository)
 				string fileName;
 				sstream >> fileName;
 				pRepository->addEntry(DataKeyEnum::GAME_FONT, fileName);
+			}
+			else if (id == "num_units_create")
+			{
+				int unitsToCreate;
+				sstream >> unitsToCreate;
+				pRepository->addEntry(DataKeyEnum::NUM_UNITS_CREATE, unitsToCreate);
+			}
+			else if (id == "slow_radius_arrive")
+			{
+				float slowRadius;
+				sstream >> slowRadius;
+				pRepository->addEntry(DataKeyEnum::SLOW_RADIUS_ARRIVE, slowRadius);
+			}
+			else if (id == "target_radius_arrive")
+			{
+				float targetRadius;
+				sstream >> targetRadius;
+				pRepository->addEntry(DataKeyEnum::TARGET_RADIUS_ARRIVE, targetRadius);
+			}
+			else if (id == "time_to_target_arrive")
+			{
+				float timeToTarget;
+				sstream >> timeToTarget;
+				pRepository->addEntry(DataKeyEnum::TIME_TO_TARGET_ARRIVE, timeToTarget);
+			}
+			else if (id == "slow_radius_face")
+			{
+				float slowRadius;
+				sstream >> slowRadius;
+				pRepository->addEntry(DataKeyEnum::SLOW_RADIUS_FACE, slowRadius);
+			}
+			else if (id == "target_radius_face")
+			{
+			float targetRadius;
+			sstream >> targetRadius;
+			pRepository->addEntry(DataKeyEnum::TARGET_RADIUS_FACE, targetRadius);
+			}
+			else if (id == "time_to_target_face")
+			{
+			float timeToTarget;
+			sstream >> timeToTarget;
+			pRepository->addEntry(DataKeyEnum::TIME_TO_TARGET_FACE, timeToTarget);
+			}
+			else if (id == "chase_distance")
+			{
+				float chaseDistance;
+				sstream >> chaseDistance;
+				pRepository->addEntry(DataKeyEnum::CHASE_DISTANCE, chaseDistance);
 			}
 			else
 			{

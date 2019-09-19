@@ -54,6 +54,7 @@ public:
 	inline DataRepository* getDataRepository() { return mpRepository; };
 	inline Timer* getMasterTimer() const { return mpMasterTimer; };
 	inline double getCurrentTime() const { return mpMasterTimer->getElapsedTime(); };
+	bool mShouldExit;
 
 private:
 	System* mpSystem;
@@ -71,7 +72,6 @@ private:
 	float mTimeMult = 1.0f;
 	bool mDrawDebugData = false;
 	bool mDoFleeBehaviour = false;
-	bool mShouldExit;
 	UINT mTargetFPS=0;
 	float mTargetElapsedTime = 0.0f;
 

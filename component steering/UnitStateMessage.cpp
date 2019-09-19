@@ -3,10 +3,11 @@
 #include "UnitStateMessage.h"
 #include "UnitManager.h"
 #include "SpriteManager.h"
+#include "Steering.h"
 
-UnitStateMessage::UnitStateMessage(string destroyOrCreate, bool behaviorToProcess)
+UnitStateMessage::UnitStateMessage(string destroyOrCreate, Steering::SteeringType unitBehaviour)
 	:GameMessage(UNIT_STATE_MESSAGE)
-	, mBehaviour(behaviorToProcess)
+	, mBehaviour(unitBehaviour)
 	, mDestroyOrCreate(destroyOrCreate)
 {
 

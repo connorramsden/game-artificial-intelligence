@@ -11,6 +11,10 @@ ArriveSteering::ArriveSteering(const UnitID& ownerID, const Vector2D& targetLoc,
 {
 	mType = Steering::ARRIVE;
 
+	mSlowRadius = gpGame->getDataRepository()->getEntry(DataKeyEnum::SLOW_RADIUS_ARRIVE).getFloatVal();
+	mTargetRadius = gpGame->getDataRepository()->getEntry(DataKeyEnum::TARGET_RADIUS_ARRIVE).getFloatVal();
+	mTimeToTarget = gpGame->getDataRepository()->getEntry(DataKeyEnum::TIME_TO_TARGET_ARRIVE).getFloatVal();
+
 	setOwnerID(ownerID);
 	setTargetLoc(targetLoc);
 	setTargetID(targetID);
@@ -36,34 +40,34 @@ Steering* ArriveSteering::getSteering()
 	distance = direction.getLength();
 
 	// If we are already at our target, return nothing
-	if (distance < TARGET_RADIUS)
+	if (distance < mTargetRadius)
 		return nullptr;
 
 	// If we are outside the slow radius, go maximum speed
-	if (distance > SLOW_RADIUS)
+	if (distance > mSlowRadius)
 	{
 		targetSpeed = pOwner->getMaxSpeed();
 	}
 	// Otherwise, calculate a scaled speed
 	else
 	{
-		targetSpeed = pOwner->getMaxSpeed() * distance / SLOW_RADIUS;
+		targetSpeed = pOwner->getMaxSpeed() * distance / mSlowRadius;
 	}
-	
+
 	// targetVelocity = direction
 	targetVel = direction;
 	targetVel.normalize();
 	targetVel *= targetSpeed;
 
 	data.acc = targetVel - pOwner->getPhysicsComponent()->getVelocity();
-	data.acc /= TIME_TO_TARGET;
+	data.acc /= mTimeToTarget;
 
 	if (data.acc.getLength() > data.maxAccMagnitude)
 	{
 		data.acc.normalize();
 		data.acc *= data.maxAccMagnitude;
 	}
-	
+
 	data.rotAcc = 0.0f;
 
 	this->mData = data;

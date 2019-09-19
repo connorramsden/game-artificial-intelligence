@@ -34,7 +34,7 @@ Steering* SeekSteering::getSteering()
 		//seeking unit
 		Unit* pTarget = gpGame->getUnitManager()->getUnit(mTargetID);
 		assert(pTarget != NULL);
-		mTargetLoc = pTarget->getPositionComponent()->getPosition();
+		mTargetLoc = pTarget->getPosition();
 	}
 
 	if (mType == Steering::SEEK)

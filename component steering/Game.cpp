@@ -24,6 +24,7 @@
 #include <DataRepository.h>
 #include "PlayerMoveToMessage.h"
 #include "UnitStateMessage.h"
+#include "ExitMessage.h"
 #include "ComponentManager.h"
 #include "UnitManager.h"
 #include "DataLoader.h"
@@ -125,7 +126,8 @@ bool Game::init()
 
 	if (pArrowSprite)
 	{
-		pUnit = mpUnitManager->createPlayerUnit(*pArrowSprite, false, PositionData(Vector2D(getGraphicsSystem()->getDisplayWidth() / 2.0f, getGraphicsSystem()->getDisplayHeight() / 2.0f), 0.0f));
+		pUnit = mpUnitManager->createPlayerUnit(*pArrowSprite, false, PositionData(Vector2D(getGraphicsSystem()->getDisplayWidth() / 2.0f,
+			getGraphicsSystem()->getDisplayHeight() / 2.0f), 0.0f));
 		pUnit->setShowTarget(true);
 		pUnit->setSteering(Steering::WANDER, ZERO_VECTOR2D);
 	}
@@ -248,12 +250,23 @@ void Game::processLoop()
 
 	if (pInputSystem->isKeyPressed(InputSystem::ESCAPE_KEY))
 	{
-		mShouldExit = true;
+		GameMessage* pMessage = new ExitMessage();
+		MESSAGE_MANAGER->addMessage(pMessage, 0);
 	}
 
 	if (pInputSystem->isKeyPressed(InputSystem::UP_KEY))
 	{
-		GameMessage* pMessage = new UnitStateMessage("create", mDoFleeBehaviour);
+		GameMessage* pMessage;
+
+		if (mDoFleeBehaviour)
+		{
+			pMessage = new UnitStateMessage("create", Steering::SteeringType::SEEK);
+		}
+		else
+		{
+			pMessage = new UnitStateMessage("create", Steering::SteeringType::FLEE);
+		}
+
 		MESSAGE_MANAGER->addMessage(pMessage, 0);
 	}
 	else if (pInputSystem->isKeyPressed(InputSystem::DOWN_KEY))
@@ -284,6 +297,28 @@ void Game::processLoop()
 	else
 	{
 		mDoFleeBehaviour = false;
+	}
+
+	if (pInputSystem->isKeyPressed(InputSystem::A_KEY))
+	{
+		GameMessage* pMessage = new UnitStateMessage("create", Steering::SteeringType::WANDER_AND_CHASE);
+		MESSAGE_MANAGER->addMessage(pMessage, 0);
+	}
+
+	if (pInputSystem->isKeyPressed(InputSystem::M_KEY))
+	{
+		int numUnits = mpRepository->getEntry(DataKeyEnum::NUM_UNITS_CREATE).getIntVal();
+		for (int i = 0; i < numUnits; ++i)
+		{
+			GameMessage* pMessage = new UnitStateMessage("create", Steering::SteeringType::WANDER_AND_CHASE);
+			MESSAGE_MANAGER->addMessage(pMessage, 0);
+		}
+	}
+	
+	if (pInputSystem->isKeyPressed(InputSystem::X_KEY))
+	{
+		GameMessage* pMessage = new UnitStateMessage("destroy");
+		MESSAGE_MANAGER->addMessage(pMessage, 0);
 	}
 
 	if (pInputSystem->isKeyPressed(InputSystem::D_KEY))

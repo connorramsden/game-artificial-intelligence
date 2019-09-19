@@ -5,6 +5,7 @@
 #include "Game.h"
 #include "ComponentManager.h"
 #include "GraphicsSystem.h"
+#include "Steering.h"
 
 UnitID UnitManager::msNextUnitID = PLAYER_UNIT_ID + 1;
 
@@ -62,7 +63,7 @@ Unit* UnitManager::createPlayerUnit(const Sprite& sprite, bool shouldWrap /*= tr
 	return createUnit(sprite, shouldWrap, posData, physicsData, PLAYER_UNIT_ID);
 }
 
-Unit* UnitManager::createRandomUnit(const Sprite& sprite, bool doFleeBehaviour)
+Unit* UnitManager::createRandomUnit(const Sprite& sprite, Steering::SteeringType unitBehaviour)
 {
 
 	int posX = rand() % GraphicsSystem::getDisplayWidth();
@@ -70,7 +71,7 @@ Unit* UnitManager::createRandomUnit(const Sprite& sprite, bool doFleeBehaviour)
 	int velX = rand() % 50 - 25;
 	int velY = rand() % 40 - 20;
 
-	Unit* pUnit = createUnit(sprite, doFleeBehaviour, PositionData(Vector2D(posX, posY), 0), PhysicsData(Vector2D(velX, velY), Vector2D(0.1f, 0.1f), 0.1f, 0.05f));
+	Unit* pUnit = createUnit(sprite, false, PositionData(Vector2D(posX, posY), 0), PhysicsData(Vector2D(velX, velY), Vector2D(0.1f, 0.1f), 0.1f, 0.05f));
 
 	if (pUnit != NULL)
 	{
@@ -78,14 +79,7 @@ Unit* UnitManager::createRandomUnit(const Sprite& sprite, bool doFleeBehaviour)
 
 		// Seek the player instead of the center of the screen
 		// Depending on the passed behaviour, seek or flee
-		if (doFleeBehaviour == false)
-		{
-			pUnit->setSteering(Steering::SEEK, ZERO_VECTOR2D, PLAYER_UNIT_ID);
-		}
-		else
-		{
-			pUnit->setSteering(Steering::FLEE, ZERO_VECTOR2D, PLAYER_UNIT_ID);
-		}
+		pUnit->setSteering(unitBehaviour);
 	}
 
 	return pUnit;

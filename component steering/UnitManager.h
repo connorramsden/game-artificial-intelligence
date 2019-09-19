@@ -6,10 +6,13 @@
 #include <unordered_map>
 #include "PositionComponent.h"
 #include "PhysicsComponent.h"
+
 #include "Unit.h"
 
 class Unit;
 class Sprite;
+class Steering;
+enum Steering::SteeringType;
 struct PositionData;
 struct PhysicsData;
 
@@ -24,7 +27,7 @@ public:
 
 	Unit* createUnit(const Sprite& sprite, bool shouldWrap = true, const PositionData& posData = PositionComponent::getZeroPositionData(), const PhysicsData& physicsData = PhysicsComponent::getZeroPhysicsData(), const UnitID& id = INVALID_UNIT_ID);
 	Unit* createPlayerUnit(const Sprite& sprite, bool shouldWrap = true, const PositionData& posData = PositionComponent::getZeroPositionData(), const PhysicsData& physicsData = PhysicsComponent::getZeroPhysicsData());
-	Unit* createRandomUnit(const Sprite& sprite, bool createBehaviour);
+	Unit* createRandomUnit(const Sprite& sprite, Steering::SteeringType unitBehaviour);
 
 	Unit* getUnit(const UnitID& id) const;
 	void deleteUnit(const UnitID& id);

@@ -16,6 +16,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentManager.h" />
     <ClInclude Include="DataLoader.h" />
+    <ClInclude Include="ExitMessage.h" />
     <ClInclude Include="ExtraColors.h" />
     <ClInclude Include="FaceSteering.h" />
     <ClInclude Include="Game.h" />
@@ -39,6 +40,7 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentManager.cpp" />
     <ClCompile Include="DataLoader.cpp" />
+    <ClCompile Include="ExitMessage.cpp" />
     <ClCompile Include="FaceSteering.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameMessage.cpp" />

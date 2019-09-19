@@ -10,6 +10,10 @@ FaceSteering::FaceSteering(const UnitID& ownerID, const Vector2D& targetLoc, con
 {
 	mType = Steering::FACE;
 
+	mSlowRadius = gpGame->getDataRepository()->getEntry(DataKeyEnum::SLOW_RADIUS_FACE).getFloatVal();
+	mTargetRadius = gpGame->getDataRepository()->getEntry(DataKeyEnum::TARGET_RADIUS_FACE).getFloatVal();
+	mTimeToTarget = gpGame->getDataRepository()->getEntry(DataKeyEnum::TIME_TO_TARGET_FACE).getFloatVal();
+
 	setOwnerID(ownerID);
 	setTargetID(targetID);
 	setTargetLoc(targetLoc);
@@ -38,25 +42,25 @@ Steering* FaceSteering::getSteering()
 
 	rotation = targetOrientation - pOwner->getFacing();
 
-	mappedRotation = float( mapToRangeMinusPiToPi(rotation));
+	mappedRotation = float(mapToRangeMinusPiToPi(rotation));
 	rotationSize = abs(mappedRotation);
 	// End Borrowed Math
 
 	// Formula from pg. 64 & 65 in the textbook
 	// Start Book Formula
-	if (rotationSize < TARGET_RADIUS)
+	if (rotationSize < mTargetRadius)
 		targetRotation = 0.0f;
-	if (rotationSize > SLOW_RADIUS)
+	if (rotationSize > mSlowRadius)
 	{
 		targetRotation = pOwner->getMaxRotAcc();
 	}
 	else
-		targetRotation = pOwner->getMaxRotAcc() * rotationSize / SLOW_RADIUS;
+		targetRotation = pOwner->getMaxRotAcc() * rotationSize / mSlowRadius;
 
 	targetRotation *= rotation / rotationSize;
 
 	data.rotAcc = targetRotation - pOwner->getPhysicsComponent()->getRotationalVelocity();
-	data.rotAcc /= TIME_TO_TARGET;
+	data.rotAcc /= mTimeToTarget;
 
 	float angularAcceleration = abs(pOwner->getPhysicsComponent()->getRotationalAcceleration());
 	if (angularAcceleration > pOwner->getMaxRotAcc())
