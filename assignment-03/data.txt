@@ -18,3 +18,7 @@ slow_radius_face 5.0
 target_radius_face 2.5
 time_to_target_face 0.1
 chase_distance 10.0
+neighborhood_radius 300.0
+cohesion_weight 0.7
+separation_weight 0.5
+align_weight 0.1

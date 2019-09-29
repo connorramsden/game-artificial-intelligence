@@ -9,6 +9,9 @@
 
 #include "Unit.h"
 
+#include <list>
+using std::list;
+
 class Unit;
 class Sprite;
 class Steering;
@@ -22,7 +25,7 @@ class UnitManager : public Trackable
 {
 public:
 	UnitManager(Uint32 maxSize);
-	~UnitManager(){};
+	~UnitManager() {};
 
 	Unit* createUnit(const Sprite& sprite, bool shouldWrap = true, const PositionData& posData = PositionComponent::getZeroPositionData(), const PhysicsData& physicsData = PhysicsComponent::getZeroPhysicsData(), const UnitID& id = INVALID_UNIT_ID);
 	Unit* createPlayerUnit(const Sprite& sprite, bool shouldWrap = true, const PositionData& posData = PositionComponent::getZeroPositionData(), const PhysicsData& physicsData = PhysicsComponent::getZeroPhysicsData());
@@ -40,9 +43,11 @@ public:
 	Uint32 getNumUnits() const { return mUnitMap.size(); };
 
 protected:
-	void updateNeighborhood(Unit* unitToUpdate);
+	// Create a linked-list 'neighborhood'
+	list<Unit*> createNeighborhood(const Vector2D& centerLoc);
 private:
 	int mCounter = 0;
+	float mNeighborhoodRadius;
 	static UnitID msNextUnitID;
 	MemoryPool mPool;
 	std::unordered_map<UnitID, Unit*> mUnitMap;

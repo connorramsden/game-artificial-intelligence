@@ -1,18 +1,14 @@
 #include "Steering.h"
 
-using std::vector;
 class Unit;
 
 class GroupAlignmentSteering : public Steering
 {
 public:
-	GroupAlignmentSteering(SteeringType type, const UnitID& ownerID, const Vector2D& targetLoc, const UnitID& targetID);
-	~GroupAlignmentSteering() { delete mpSubSteeringFace; };
+	GroupAlignmentSteering(const UnitID& ownerID, const Vector2D& targetLoc = ZERO_VECTOR2D, const UnitID& targetID = INVALID_UNIT_ID);
+
 protected:
-	Steering* getSteering();
-	void calculateGroupFace(Unit* pOwner);
-private:
+	virtual Steering* getSteering();
 	Steering* mpSubSteeringFace;
-	Vector2D mGroupFaceLoc;
-	vector<Unit*> mOwnerNeighborhood;
+	Vector2D calculateGroupFace(Unit* pOwner);
 };

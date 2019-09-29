@@ -1,19 +1,13 @@
 #include "Steering.h"
 
 class Unit;
-using std::vector;
 
 class CohesionSteering : public Steering
 {
 public:
-	CohesionSteering(const UnitID& ownerID, const Vector2D& targetLoc, const UnitID& targetID = INVALID_UNIT_ID);
-	~CohesionSteering() { delete mpSubSteeringSeek; }
+	CohesionSteering(const UnitID& ownerID, const Vector2D& targetLoc = ZERO_VECTOR2D, const UnitID& targetID = INVALID_UNIT_ID);
 protected:
 	virtual Steering* getSteering();
 	Steering* mpSubSteeringSeek;
-	void calculateCenter(Unit* pOwner);
-
-private:
-	Vector2D mCommonPosition; 
-	vector<Unit*> mOwnerNeighborhood;
+	Vector2D calculateCenter(Unit* pOwner);
 };

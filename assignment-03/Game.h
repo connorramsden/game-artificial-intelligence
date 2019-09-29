@@ -74,6 +74,7 @@ private:
 	bool mDoFleeBehaviour = false;
 	UINT mTargetFPS=0;
 	float mTargetElapsedTime = 0.0f;
+	bool mChangeWeights = false;
 
 	//should be somewhere else
 	GraphicsBufferID mBackgroundBufferID = "woods";
@@ -86,7 +87,6 @@ private:
 	void endLoop();
 
 	void drawDebugData();
-
 };
 
 float genRandomBinomial();//range -1:1 from "Artificial Intelligence for Games", Millington and Funge

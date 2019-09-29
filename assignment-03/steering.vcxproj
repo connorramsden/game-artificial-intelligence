@@ -37,6 +37,7 @@
     <ClInclude Include="UnitStateMessage.h" />
     <ClInclude Include="WanderAndChaseSteering.h" />
     <ClInclude Include="WanderSteering.h" />
+    <ClInclude Include="WeightMessage.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ArriveAndFaceSteering.cpp" />
@@ -65,6 +66,7 @@
     <ClCompile Include="UnitStateMessage.cpp" />
     <ClCompile Include="WanderAndChaseSteering.cpp" />
     <ClCompile Include="WanderSteering.cpp" />
+    <ClCompile Include="WeightMessage.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{07ED8114-0659-4424-9468-50DBBEA5882A}</ProjectGuid>

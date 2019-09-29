@@ -10,22 +10,22 @@
 #include "Sprite.h"
 #include "Steering.h"
 
-using std::vector;
+#include <list>
+using std::list;
 
 class PhysicsComponent;
 class SteeringComponent;
 class Sprite;
 class UnitManager;
 
-
 class Unit : public Trackable
 {
 public:
 	void draw() const;
-	float getFacing() const; 
+	float getFacing() const;
 	Vector2D getHeadingVector() const;
 	Vector2D getPosition() const;
-	void update(float elapsedTime){};
+	void update(float elapsedTime) {};
 
 	PositionComponent* getPositionComponent() const;
 	PhysicsComponent* getPhysicsComponent() const;
@@ -36,13 +36,10 @@ public:
 	float getMaxRotVel() const { return mMaxRotVel; };
 	void setShowTarget(bool val) { mShowTarget = val; };
 	UnitID getID() const { return mID; };
-	vector<Unit*> getNeighborhood() { return mNeighborhood; };
-
+	list<Unit*> getNeighborhood() { return mNeighborhood; };
+	void setNeighborhood(list<Unit*> newHood);
 	void setSteering(Steering::SteeringType type, Vector2D targetLoc = ZERO_VECTOR2D, UnitID targetUnitID = INVALID_UNIT_ID);
 
-protected:
-	void addToNeighborhood(Unit* unitToAdd);
-	void removeFromNeighborhood(Unit* unitToRemove);
 private:
 	UnitID mID;
 	ComponentID mPhysicsComponentID;
@@ -64,7 +61,7 @@ private:
 	Unit(Unit&);//invalidate copy constructor
 	void operator=(Unit&);//invalidate assignment operator
 
-	vector<Unit*> mNeighborhood;
+	list<Unit*> mNeighborhood;
 
 	friend class UnitManager;
 };

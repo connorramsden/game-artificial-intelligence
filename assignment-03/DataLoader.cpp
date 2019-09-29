@@ -5,6 +5,7 @@
 #include <windows.h>
 
 using namespace std;
+#include <algorithm>
 
 DataLoader::DataLoader(const string& filename, DataRepository* pRepository)
 {
@@ -124,15 +125,15 @@ DataLoader::DataLoader(const string& filename, DataRepository* pRepository)
 			}
 			else if (id == "target_radius_face")
 			{
-			float targetRadius;
-			sstream >> targetRadius;
-			pRepository->addEntry(DataKeyEnum::TARGET_RADIUS_FACE, targetRadius);
+				float targetRadius;
+				sstream >> targetRadius;
+				pRepository->addEntry(DataKeyEnum::TARGET_RADIUS_FACE, targetRadius);
 			}
 			else if (id == "time_to_target_face")
 			{
-			float timeToTarget;
-			sstream >> timeToTarget;
-			pRepository->addEntry(DataKeyEnum::TIME_TO_TARGET_FACE, timeToTarget);
+				float timeToTarget;
+				sstream >> timeToTarget;
+				pRepository->addEntry(DataKeyEnum::TIME_TO_TARGET_FACE, timeToTarget);
 			}
 			else if (id == "chase_distance")
 			{
@@ -140,13 +141,105 @@ DataLoader::DataLoader(const string& filename, DataRepository* pRepository)
 				sstream >> chaseDistance;
 				pRepository->addEntry(DataKeyEnum::CHASE_DISTANCE, chaseDistance);
 			}
+			else if (id == "neighborhood_radius")
+			{
+				float neighborhoodRadius;
+				sstream >> neighborhoodRadius;
+				pRepository->addEntry(DataKeyEnum::NEIGHBOR_RADIUS, neighborhoodRadius);
+			}
+			else if (id == "cohesion_weight")
+			{
+				float cohesionWeight;
+				sstream >> cohesionWeight;
+				pRepository->addEntry(DataKeyEnum::COHESION_WEIGHT, cohesionWeight);
+			}
+			else if (id == "separation_weight")
+			{
+				float separationWeight;
+				sstream >> separationWeight;
+				pRepository->addEntry(DataKeyEnum::SEPARATION_WEIGHT, separationWeight);
+			}
+			else if (id == "align_weight")
+			{
+				float alignWeight;
+				sstream >> alignWeight;
+				pRepository->addEntry(DataKeyEnum::ALIGN_WEIGHT, alignWeight);
+			}
 			else
 			{
 				cout << "Unknown tag:" << id << endl;
 			}
 		}
 	}
-
 }
 
+void DataRepository::outputToFile(const string& fileInName, DataRepository* pRepository, const string& fileOutName)
+{
+	// open the input file
+	ifstream input(fileInName);
+	ofstream output;
+	stringstream outStream;
 
+	// if input file is there
+	if (input.good())
+	{
+		// iterate over it and save to a stringstream
+		while (!input.eof())
+		{
+			string line;
+			getline(input, line);
+			string id;
+			stringstream sstream(line);
+			sstream >> id;
+
+			if (id == "cohesion_weight")
+			{
+				float outFloat = pRepository->getEntry(DataKeyEnum::COHESION_WEIGHT).getFloatVal();
+				outStream << id << " " << outFloat << '\n';
+			}
+			else if (id == "separation_weight")
+			{
+				float outFloat = pRepository->getEntry(DataKeyEnum::SEPARATION_WEIGHT).getFloatVal();
+				outStream << id << " " << outFloat << '\n';
+			}
+			else if (id == "align_weight")
+			{
+				float outFloat = pRepository->getEntry(DataKeyEnum::ALIGN_WEIGHT).getFloatVal();
+				outStream << id << " " << outFloat << '\n';
+			}
+			else
+			{
+				outStream << line << '\n';
+			}
+		}
+
+		input.close();
+	}
+	
+	// If the user passed a separate file-out name, open it
+	if (!fileOutName.empty())
+	{
+		output.open(fileOutName);
+	}
+	// Otherwise, open the input file for output
+	else
+	{
+		output.open(fileInName);
+	}
+
+	string outString = outStream.str();
+
+
+	while (outString[outString.length() - 1] == '\n')
+	{
+		outString.erase(outString.length() - 1);
+	}
+
+	// Output to file!
+	if (output.good())
+	{
+		output << outString;
+	}
+
+	output.close();
+}

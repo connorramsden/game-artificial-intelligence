@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <iostream>
+#include <fstream>
 
 #include <sstream>
 
@@ -25,6 +26,7 @@
 #include "PlayerMoveToMessage.h"
 #include "UnitStateMessage.h"
 #include "ExitMessage.h"
+#include "WeightMessage.h"
 #include "ComponentManager.h"
 #include "UnitManager.h"
 #include "DataLoader.h"
@@ -196,10 +198,7 @@ void Game::processLoop()
 	mpUnitManager->updateAll(dt);
 	mpComponentManager->update(dt);
 	pInputSystem->update(dt);
-
-	//draw background
-	//GraphicsSystem::renderFilledRect(*GraphicsSystem::getBackBuffer(), ZERO_VECTOR2D, GraphicsSystem::getDisplayWidth(), GraphicsSystem::getDisplayHeight(), BACKGROUND_BLUE_COLOR);
-
+	
 	Sprite* pBackgroundSprite = mpSpriteManager->getSprite(BACKGROUND_SPRITE_ID);
 	GraphicsSystem::draw(Vector2D(0, 0), *pBackgroundSprite);
 
@@ -229,7 +228,7 @@ void Game::processLoop()
 		MESSAGE_MANAGER->addMessage(pMessage, 0);
 	}
 
-	if (pInputSystem->isKeyPressed(InputSystem::UP_KEY))
+	if (pInputSystem->isKeyPressed(InputSystem::UP_KEY) && !mChangeWeights)
 	{
 		GameMessage* pMessage;
 
@@ -244,7 +243,7 @@ void Game::processLoop()
 
 		MESSAGE_MANAGER->addMessage(pMessage, 0);
 	}
-	else if (pInputSystem->isKeyPressed(InputSystem::DOWN_KEY))
+	else if (pInputSystem->isKeyPressed(InputSystem::DOWN_KEY) && !mChangeWeights)
 	{
 		GameMessage* pMessage = new UnitStateMessage("destroy");
 		MESSAGE_MANAGER->addMessage(pMessage, 0);
@@ -294,6 +293,56 @@ void Game::processLoop()
 	{
 		GameMessage* pMessage = new UnitStateMessage("destroy");
 		MESSAGE_MANAGER->addMessage(pMessage, 0);
+	}
+	
+	if (pInputSystem->isKeyPressed(InputSystem::C_KEY))
+	{
+		mChangeWeights = true;
+		if (pInputSystem->isKeyPressed(InputSystem::UP_KEY))
+		{
+			GameMessage* pMessage = new WeightMessage("cu");
+			MESSAGE_MANAGER->addMessage(pMessage, 0);
+		}
+		else if (pInputSystem->isKeyPressed(InputSystem::DOWN_KEY))
+		{
+			GameMessage* pMessage = new WeightMessage("cd");
+			MESSAGE_MANAGER->addMessage(pMessage, 0);
+		}
+		mpRepository->outputToFile("data.txt", mpRepository);
+	}
+	else if (pInputSystem->isKeyPressed(InputSystem::G_KEY))
+	{
+		mChangeWeights = true;
+		if (pInputSystem->isKeyPressed(InputSystem::UP_KEY))
+		{
+			GameMessage* pMessage = new WeightMessage("gu");
+			MESSAGE_MANAGER->addMessage(pMessage, 0);
+		}
+		else if (pInputSystem->isKeyPressed(InputSystem::DOWN_KEY))
+		{
+			GameMessage* pMessage = new WeightMessage("gd");
+			MESSAGE_MANAGER->addMessage(pMessage, 0);
+		}
+		mpRepository->outputToFile("data.txt", mpRepository);
+	}
+	else if (pInputSystem->isKeyPressed(InputSystem::S_KEY))
+	{
+		mChangeWeights = true;
+		if (pInputSystem->isKeyPressed(InputSystem::UP_KEY))
+		{
+			GameMessage* pMessage = new WeightMessage("su");
+			MESSAGE_MANAGER->addMessage(pMessage, 0);
+		}
+		else if (pInputSystem->isKeyPressed(InputSystem::DOWN_KEY))
+		{
+			GameMessage* pMessage = new WeightMessage("sd");
+			MESSAGE_MANAGER->addMessage(pMessage, 0);
+		}
+		mpRepository->outputToFile("data.txt", mpRepository);
+	}
+	else
+	{
+		mChangeWeights = false;
 	}
 
 	if (pInputSystem->isKeyPressed(InputSystem::D_KEY))
@@ -348,6 +397,23 @@ void Game::drawDebugData()
 	textStream << "time mult:" << mTimeMult;
 	GraphicsSystem::writeText(Vector2D(GraphicsSystem::getDisplayWidth() / 4, 0), *mpFont, BLACK_COLOR, textStream.str(), Font::CENTER);
 
+	textStream.str("");
+	textStream.clear();
+
+	textStream << "Cohesion: " << mpRepository->getEntry(DataKeyEnum::COHESION_WEIGHT).getFloatVal();
+	GraphicsSystem::writeText(Vector2D(GraphicsSystem::getDisplayWidth() / 4.0f, GraphicsSystem::getDisplayHeight() - 600.0f), *mpFont, BLACK_COLOR, textStream.str(), Font::CENTER);
+
+	textStream.str("");
+	textStream.clear();
+
+	textStream << "Align: " << mpRepository->getEntry(DataKeyEnum::ALIGN_WEIGHT).getFloatVal();
+	GraphicsSystem::writeText(Vector2D(GraphicsSystem::getDisplayWidth() / 2.0f, GraphicsSystem::getDisplayHeight() - 600.0f), *mpFont, BLACK_COLOR, textStream.str(), Font::CENTER);
+
+	textStream.str("");
+	textStream.clear();
+
+	textStream << "Separation: " << mpRepository->getEntry(DataKeyEnum::SEPARATION_WEIGHT).getFloatVal();
+	GraphicsSystem::writeText(Vector2D(GraphicsSystem::getDisplayWidth() - 100.0f, GraphicsSystem::getDisplayHeight() - 600.0f), *mpFont, BLACK_COLOR, textStream.str(), Font::RIGHT);
 }
 
 GraphicsSystem* Game::getGraphicsSystem() const

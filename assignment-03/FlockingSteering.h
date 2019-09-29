@@ -5,7 +5,7 @@ class Unit;
 class FlockingSteering : public Steering
 {
 public:
-	FlockingSteering(const UnitID& ownerID, const Vector2D& targetLoc, const UnitID& targetID);
+	FlockingSteering(const UnitID& ownerID);
 	~FlockingSteering();
 
 protected:
@@ -14,4 +14,9 @@ protected:
 	Steering* mpSubSteeringCohesion;
 	Steering* mpSubSteeringSeparation;
 	Steering* mpSubSteeringGroupAlignment;
+
+private:
+	float mCohesionWeight;
+	float mSeparationWeight;
+	float mAlignWeight;
 };

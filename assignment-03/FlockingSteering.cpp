@@ -6,15 +6,16 @@
 #include "SeparationSteering.h"
 #include "GroupAlignmentSteering.h"
 
-FlockingSteering::FlockingSteering(const UnitID& ownerID, const Vector2D& targetLoc, const UnitID& targetID)
+FlockingSteering::FlockingSteering(const UnitID& ownerID)
+	:Steering(Steering::FLOCKING)
 {
-	mType = Steering::FLOCKING;
 	setOwnerID(ownerID);
-	setTargetLoc(targetLoc);
-	setTargetID(targetID);
-
-	mpSubSteeringCohesion = new CohesionSteering(mOwnerID, mTargetLoc, mTargetID);
-	mpSubSteeringGroupAlignment = new GroupAlignmentSteering(Steering::GROUP_ALIGNMENT, mOwnerID, mTargetLoc, mTargetID);
+	mCohesionWeight = gpGame->getDataRepository()->getEntry(DataKeyEnum::COHESION_WEIGHT).getFloatVal();
+	mSeparationWeight = gpGame->getDataRepository()->getEntry(DataKeyEnum::SEPARATION_WEIGHT).getFloatVal();
+	mAlignWeight = gpGame->getDataRepository()->getEntry(DataKeyEnum::ALIGN_WEIGHT).getFloatVal();
+	mpSubSteeringCohesion = new CohesionSteering(mOwnerID);
+	mpSubSteeringSeparation = new SeparationSteering(mOwnerID);
+	mpSubSteeringGroupAlignment = new GroupAlignmentSteering(mOwnerID);
 }
 
 FlockingSteering::~FlockingSteering()
@@ -24,29 +25,52 @@ FlockingSteering::~FlockingSteering()
 		delete mpSubSteeringCohesion;
 		mpSubSteeringCohesion = nullptr;
 	}
+
 	if (mpSubSteeringGroupAlignment != nullptr)
 	{
 		delete mpSubSteeringGroupAlignment;
 		mpSubSteeringGroupAlignment = nullptr;
 	}
+
+	if (mpSubSteeringSeparation != nullptr)
+	{
+		delete mpSubSteeringSeparation;
+		mpSubSteeringSeparation = nullptr;
+	}
 }
 
 Steering* FlockingSteering::getSteering()
 {
+	// Since values can be tweaked during gameplay, re-get them
+	DataRepository* tempRepo = gpGame->getDataRepository();
+	mCohesionWeight = tempRepo->getEntry(DataKeyEnum::COHESION_WEIGHT).getFloatVal();
+	mSeparationWeight = tempRepo->getEntry(DataKeyEnum::SEPARATION_WEIGHT).getFloatVal();
+	mAlignWeight = tempRepo->getEntry(DataKeyEnum::ALIGN_WEIGHT).getFloatVal();
+
+	// Establish data for THIS unit
+	Unit* pOwner = gpGame->getUnitManager()->getUnit(mOwnerID);
+	PhysicsData ownerData = pOwner->getPhysicsComponent()->getData();
+	
+	// Update the data for the Cohesion sub-steering
 	mpSubSteeringCohesion->update();
 	mpSubSteeringGroupAlignment->update();
-
-	Vector2D newTargetLoc = mpSubSteeringCohesion->getTargetLoc() + mpSubSteeringGroupAlignment->getTargetLoc();
-
-	setTargetLoc(newTargetLoc);
+	mpSubSteeringSeparation->update();
 
 	PhysicsData cohesionData = mpSubSteeringCohesion->getData();
-	PhysicsData groupAlignData = mpSubSteeringGroupAlignment->getData();
+	PhysicsData alignData = mpSubSteeringGroupAlignment->getData();
+	PhysicsData sepData = mpSubSteeringSeparation->getData();
 
-	this->mData.vel = cohesionData.vel;
-	this->mData.acc = cohesionData.acc;
-	this->mData.rotVel = groupAlignData.rotVel;
-	this->mData.rotAcc = groupAlignData.rotAcc;
+	// Grab a target position from the sub steering
+	Vector2D targetPos = mpSubSteeringCohesion->getTargetLoc() + mpSubSteeringGroupAlignment->getTargetLoc();
+		
+	setTargetLoc(targetPos);
+
+	ownerData.vel = (cohesionData.vel * mCohesionWeight) + (alignData.vel * mCohesionWeight) + (sepData.vel * mSeparationWeight);
+	ownerData.acc = (cohesionData.acc * mCohesionWeight) + (alignData.acc * mCohesionWeight) + (sepData.acc * mSeparationWeight);
+	ownerData.rotVel = (cohesionData.rotVel * mCohesionWeight) + (alignData.rotVel * mCohesionWeight) + (sepData.rotVel * mSeparationWeight);
+	ownerData.rotAcc = (cohesionData.rotAcc * mCohesionWeight) + (alignData.rotAcc * mCohesionWeight) + (sepData.rotAcc * mSeparationWeight);
+	
+	this->mData = ownerData;
 
 	return this;
 }

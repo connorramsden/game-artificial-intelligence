@@ -14,7 +14,9 @@ using namespace std;
 
 UnitManager::UnitManager(Uint32 maxSize)
 	:mPool(maxSize, sizeof(Unit))
-{}
+{
+	mNeighborhoodRadius = gpGame->getDataRepository()->getEntry(DataKeyEnum::NEIGHBOR_RADIUS).getFloatVal();
+}
 
 Unit* UnitManager::createUnit(const Sprite& sprite, bool shouldWrap, const PositionData& posData /*= ZERO_POSITION_DATA*/, const PhysicsData& physicsData /*= ZERO_PHYSICS_DATA*/, const UnitID& id)
 {
@@ -72,7 +74,7 @@ Unit* UnitManager::createRandomUnit(const Sprite& sprite, Steering::SteeringType
 	int velX = rand() % 50 - 25;
 	int velY = rand() % 40 - 20;
 
-	Unit* pUnit = createUnit(sprite, false, PositionData(Vector2D(posX, posY), 0), PhysicsData(Vector2D(velX, velY), Vector2D(0.1f, 0.1f), 0.1f, 0.05f));
+	Unit* pUnit = createUnit(sprite, true, PositionData(Vector2D(posX, posY), 0), PhysicsData(Vector2D(velX, velY), Vector2D(0.1f, 0.1f), 0.1f, 0.05f));
 
 	if (pUnit != NULL)
 	{
@@ -156,44 +158,36 @@ void UnitManager::drawAll() const
 
 void UnitManager::updateAll(float elapsedTime)
 {
-	mCounter++;
-
-	for (auto it = mUnitMap.begin(); it != mUnitMap.end(); ++it)
+	// Iterate over the entirety of mUnitMap (Modern C++)
+	for (auto it : mUnitMap)
 	{
-		it->second->update(elapsedTime);
+		Vector2D centerPos = it.second->getPosition();
 
-		if (mCounter % 10 == 0)
-		{
-			if (it->second->getSteeringComponent()->getType() == Steering::FLOCKING)
-			{
-				updateNeighborhood(it->second);
-			}
-			mCounter = 0;
-		}		
+		it.second->setNeighborhood(createNeighborhood(centerPos));
 	}
 }
 
-// Checks the distance between the passed boid and all other boids 
-// And, if within a given radius, adds it to the passed boid's neighborhood
-void UnitManager::updateNeighborhood(Unit* unitToUpdate)
+list<Unit*> UnitManager::createNeighborhood(const Vector2D& centerLoc)
 {
-	for (auto iter = mUnitMap.begin(); iter != mUnitMap.end(); ++iter)
+	// Create the neighborhood to be returned
+	list<Unit*> neighborhood;
+
+	// Iterate over the entirety of mUnitMap (Modern C++)
+	for (auto iter : mUnitMap)
 	{
-		if (iter->second->getID() != unitToUpdate->getID())
+		// Get the iterator unit's position
+		Vector2D unitPos = iter.second->getPosition();
+		// Take the distance between the passed position and the iterator unit's position
+		Vector2D dist = unitPos - centerLoc;
+
+		// If the length is less than DATA RADIUS and non-zero (not the same unit)
+		if (dist.getLength() <= mNeighborhoodRadius && dist.hasNonZeroLength())
 		{
-			Vector2D dist;
-
-			dist = iter->second->getPosition() - unitToUpdate->getPosition();
-			dist.normalize();
-
-			if (dist.getLengthSquared() <= 10.0f)
-			{
-				unitToUpdate->addToNeighborhood(iter->second);
-			}
-			else
-			{
-				unitToUpdate->removeFromNeighborhood(iter->second);
-			}
+			// Add the unit to the neighborhood
+			neighborhood.push_back(iter.second);
 		}
 	}
+
+	// Return established neighborhood
+	return neighborhood;
 }

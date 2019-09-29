@@ -80,35 +80,21 @@ SteeringComponent* Unit::getSteeringComponent() const
 	return mpSteeringComponent;
 }
 
+void Unit::setNeighborhood(list<Unit*> newHood)
+{
+	if (!newHood.empty())
+	{
+		mNeighborhood.clear();
+
+		mNeighborhood = newHood;
+	}
+}
+
 void Unit::setSteering(Steering::SteeringType type, Vector2D targetLoc /*= ZERO_VECTOR2D*/, UnitID targetUnitID /*= INVALID_UNIT_ID*/)
 {
 	SteeringComponent* pSteeringComponent = getSteeringComponent();
 	if (pSteeringComponent != NULL)
 	{
 		pSteeringComponent->setData(SteeringData(type, targetLoc, mID, targetUnitID));
-	}
-}
-
-void Unit::addToNeighborhood(Unit* unitToAdd)
-{
-	if (unitToAdd != nullptr)
-		mNeighborhood.emplace_back(unitToAdd);
-}
-
-void Unit::removeFromNeighborhood(Unit* unitToRemove)
-{
-	// If the unit to remove exists
-	if (unitToRemove != nullptr)
-	{
-		// Iterate over the neighborhood
-		for (int i = 0; i < mNeighborhood.size() - 1; ++i)
-		{
-			// If the currently-indiced unit is the to-remove unit
-			if (unitToRemove->getID() == mNeighborhood.at(i)->getID())
-			{
-				// Remove it from the neighborhood
-				mNeighborhood.erase(mNeighborhood.begin() + i);
-			}
-		}
 	}
 }
