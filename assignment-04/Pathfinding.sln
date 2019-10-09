@@ -1,0 +1,68 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29102.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Pathfinding Common Lib", "Pathfinding Common Lib\Pathfinding Common Lib.vcxproj", "{70153CEE-0A5D-4E34-9E15-E9F79DF7C217}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4B9AB2DA-44CB-4F3D-866F-FA7F345BD810} = {4B9AB2DA-44CB-4F3D-866F-FA7F345BD810}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pathfinding game", "game\pathfinding.vcxproj", "{09059697-DB0D-44AE-B867-2437B1E3D875}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4B9AB2DA-44CB-4F3D-866F-FA7F345BD810} = {4B9AB2DA-44CB-4F3D-866F-FA7F345BD810}
+		{70153CEE-0A5D-4E34-9E15-E9F79DF7C217} = {70153CEE-0A5D-4E34-9E15-E9F79DF7C217}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Editor", "editor\Editor.vcxproj", "{B42CEE34-8C78-4188-84C8-B49248B734F9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4B9AB2DA-44CB-4F3D-866F-FA7F345BD810} = {4B9AB2DA-44CB-4F3D-866F-FA7F345BD810}
+		{70153CEE-0A5D-4E34-9E15-E9F79DF7C217} = {70153CEE-0A5D-4E34-9E15-E9F79DF7C217}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GraphicsLib", "..\..\..\shared\GraphicsLib\GraphicsLib.vcxproj", "{4B9AB2DA-44CB-4F3D-866F-FA7F345BD810}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{70153CEE-0A5D-4E34-9E15-E9F79DF7C217}.Debug|x64.ActiveCfg = Debug|x64
+		{70153CEE-0A5D-4E34-9E15-E9F79DF7C217}.Debug|x64.Build.0 = Debug|x64
+		{70153CEE-0A5D-4E34-9E15-E9F79DF7C217}.Debug|x86.ActiveCfg = Debug|Win32
+		{70153CEE-0A5D-4E34-9E15-E9F79DF7C217}.Debug|x86.Build.0 = Debug|Win32
+		{70153CEE-0A5D-4E34-9E15-E9F79DF7C217}.Release|x64.ActiveCfg = Release|x64
+		{70153CEE-0A5D-4E34-9E15-E9F79DF7C217}.Release|x64.Build.0 = Release|x64
+		{70153CEE-0A5D-4E34-9E15-E9F79DF7C217}.Release|x86.ActiveCfg = Release|Win32
+		{70153CEE-0A5D-4E34-9E15-E9F79DF7C217}.Release|x86.Build.0 = Release|Win32
+		{09059697-DB0D-44AE-B867-2437B1E3D875}.Debug|x64.ActiveCfg = Debug|Win32
+		{09059697-DB0D-44AE-B867-2437B1E3D875}.Debug|x86.ActiveCfg = Debug|Win32
+		{09059697-DB0D-44AE-B867-2437B1E3D875}.Debug|x86.Build.0 = Debug|Win32
+		{09059697-DB0D-44AE-B867-2437B1E3D875}.Release|x64.ActiveCfg = Release|Win32
+		{09059697-DB0D-44AE-B867-2437B1E3D875}.Release|x86.ActiveCfg = Release|Win32
+		{09059697-DB0D-44AE-B867-2437B1E3D875}.Release|x86.Build.0 = Release|Win32
+		{B42CEE34-8C78-4188-84C8-B49248B734F9}.Debug|x64.ActiveCfg = Debug|Win32
+		{B42CEE34-8C78-4188-84C8-B49248B734F9}.Debug|x86.ActiveCfg = Debug|Win32
+		{B42CEE34-8C78-4188-84C8-B49248B734F9}.Debug|x86.Build.0 = Debug|Win32
+		{B42CEE34-8C78-4188-84C8-B49248B734F9}.Release|x64.ActiveCfg = Release|Win32
+		{B42CEE34-8C78-4188-84C8-B49248B734F9}.Release|x86.ActiveCfg = Release|Win32
+		{B42CEE34-8C78-4188-84C8-B49248B734F9}.Release|x86.Build.0 = Release|Win32
+		{4B9AB2DA-44CB-4F3D-866F-FA7F345BD810}.Debug|x64.ActiveCfg = Debug|x64
+		{4B9AB2DA-44CB-4F3D-866F-FA7F345BD810}.Debug|x64.Build.0 = Debug|x64
+		{4B9AB2DA-44CB-4F3D-866F-FA7F345BD810}.Debug|x86.ActiveCfg = Debug|Win32
+		{4B9AB2DA-44CB-4F3D-866F-FA7F345BD810}.Debug|x86.Build.0 = Debug|Win32
+		{4B9AB2DA-44CB-4F3D-866F-FA7F345BD810}.Release|x64.ActiveCfg = Release|x64
+		{4B9AB2DA-44CB-4F3D-866F-FA7F345BD810}.Release|x64.Build.0 = Release|x64
+		{4B9AB2DA-44CB-4F3D-866F-FA7F345BD810}.Release|x86.ActiveCfg = Release|Win32
+		{4B9AB2DA-44CB-4F3D-866F-FA7F345BD810}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3A34ED62-72C4-40F9-AAA0-82CAACB737F2}
+	EndGlobalSection
+EndGlobal
